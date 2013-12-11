@@ -7,7 +7,7 @@ This package add one new meta directive to base library - **reactive**, which ma
 By default reactive is `true`.
 
 ```js
-clazz('SomeClazz', SomeParentClazz', function(self) {
+clazz('SomeClazz', 'SomeParentClazz', function(self) {
     return {
         reactive: true, // by default reactive is 'true'. So you can omit this.
         constants: {
