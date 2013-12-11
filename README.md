@@ -34,3 +34,7 @@ ClazzJS version: 0.4.1
 License
 -------
 Copyright (c) 2013 Aleksey Podskrebyshev. Licensed under the MIT license.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/alexpods/meteor-clazz/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
