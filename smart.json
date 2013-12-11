@@ -1,0 +1,6 @@
+{
+    "name": "clazz",
+    "description": "Integration ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor",
+    "author": "Aleksey Podskrebyshev (https://github.com/alexpods)",
+    "version": "0.0.1"
+}
