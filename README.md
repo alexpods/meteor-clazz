@@ -7,10 +7,9 @@ ClazzJS version: 0.5.0
 This package add one new meta directive to base library - **reactive**, which makes clazz reactive.
 By default reactive is `false`.
 
-The following example will give you a common idea about ClazzJS.
-
 For more information look at ClazzJS github repository: https://github.com/alexpods/ClazzJS;
 
+The following example will give you a common idea about ClazzJS.
 ```js
 clazz("Person", {
     reactive: true,
