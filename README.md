@@ -58,6 +58,10 @@ clazz("Person", {
                     return -1 !== this.const('SEX').indexOf(sex);
                 }
             }
+        },
+        address:  {
+            type: 'string', 
+            default: 'unknown address'
         }
     },
     clazz_methods: {
