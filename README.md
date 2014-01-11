@@ -2,34 +2,134 @@ meteor-clazz
 ============
 
 Integration ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor
+ClazzJS version: 0.5.0
 
 This package add one new meta directive to base library - **reactive**, which makes clazz reactive.
-By default reactive is `true`.
+By default reactive is `false`.
+
+The following example will give you a common idea about ClazzJS.
+
+For more information look at ClazzJS github repository: https://github.com/alexpods/ClazzJS;
 
 ```js
-clazz('SomeClazz', 'SomeParentClazz', function(self) {
-    return {
-        reactive: true, // by default reactive is 'true'. So you can omit this.
-        constants: {
-            ...
+clazz("Person", {
+    reactive: true,
+    constants: {
+        SEX: ['male', 'female'],
+    },
+    clazz_properties: {
+        countries: {
+            type: ['array', { element: ['string' , { pattern: /(\w+\s?)+/ }] }],
+            default: ['russia', 'usa', 'china', 'france']
         }
-        clazz_properties: {
-            ...
+    },
+    properties: {
+        name: {
+            type: 'string',
+            methods: ['get'],
+            reactive: false
         },
-        properties: {
-            ...
+        phone: {
+            type: ['string', {
+                pattern: /\d{1,2}-\d{3}-\d{5,7}/
+            }]
         },
-        clazz_methods: {
-            ...
+        birthday: {
+            type: 'datetime',
+            constratins: {
+                inPast: function(birthday) {
+                    return birthday.getTime() < Date.now();
+                }
+            }
         },
-        methods: {
-            ...
+        sex: {
+            type: 'string',
+            methods: ['get', 'set', 'is'],
+            converters: {
+                toFull: function(sex) {
+                    switch(sex.toLowerCase()) {
+                        case 'm': sex = 'male'; break;
+                        case 'f': sex = 'female'; break;
+                    }
+                    return sex;
+                }
+            },
+            constraints: {
+                existedSex: function(sex) {
+                    return -1 !== this.const('SEX').indexOf(sex);
+                }
+            }
+        }
+    },
+    clazz_methods: {
+        doSomething: function() {
+            console.log('clazz is doing something');
+        },
+        cryToAll: function(crying) {
+            document.write('Crying to all: "' + crying + '"!');
+            this.emit('crying', crying);
+        }
+    },
+    methods: {
+        getAge: function() {
+            return (new Date()).getFullYear() - this.getBirthday().getFullYear();
+        },
+        doSomething: function() {
+            console.log('instance is doing somethind');
+        },
+        say: function(saying) {
+            document.write(
+                this.getName() + ': "' + saying + '"!<br>'
+            );
+            this.emit('saying', saying);
+        }
+    },
+    clazz_events: {
+        'crying': {
+            thatCrying: function(crying) {
+                document.write(
+                    'That crying: "' + crying + '"!<br>'
+                );
+            }
+        },
+        "instance.created": {
+            newObjectCreated: function(object) {
+                document.write(
+                    'Person "'+object.getUID()+'" '+
+                        'with name "'+object.getName()+'" '+
+                        'was created!<br>'
+                );
+            }
+        }
+    },
+    events: {
+        "property.set": {
+            birthdayChanged: function(property, newValue, oldValue) {
+                if ('birthday' === property) {
+                    document.write(
+                        'Person "' + this.getUID() + '" ' +
+                            'change his birthday form "' + oldValue + '" ' +
+                            'to "' + newValue + '"!<br>'
+                    )
+                }
+            }
+        },
+        "property.address.remove": {
+            addressRemoved: function(oldAddress) {
+                document.write(
+                    'Person "' + this.getUID() + '" ' +
+                        'just remove his address "' + oldAddress + '"!<br>'
+                )
+            }
+        },
+        'saying': {
+            justSaying: function(saying) {
+                document.write('Person "' + this.getUID() + '" said: "' + saying + '"!<br>');
+            }
         }
     }
-})
+});
 ```
-
-ClazzJS version: 0.4.1
 
 License
 -------
