@@ -12,123 +12,125 @@ For more information look at ClazzJS github repository: https://github.com/alexp
 
 The following example will give you a common idea about ClazzJS.
 ```js
-clazz("Person", {
-    reactive: true,
-    constants: {
-        SEX: ['male', 'female'],
-    },
-    clazz_properties: {
-        countries: {
-            type: ['array', { element: ['string' , { pattern: /(\w+\s?)+/ }] }],
-            default: ['russia', 'usa', 'china', 'france']
-        }
-    },
-    properties: {
-        name: {
-            type: 'string',
-            methods: ['get'],
-            reactive: false
+clazz("Person", function(self) {
+    return {
+        reactive: true,
+        constants: {
+            SEX: ['male', 'female'],
         },
-        phone: {
-            type: ['string', {
-                pattern: /\d{1,2}-\d{3}-\d{5,7}/
-            }]
-        },
-        birthday: {
-            type: 'datetime',
-            constratins: {
-                inPast: function(birthday) {
-                    return birthday.getTime() < Date.now();
-                }
+        clazz_properties: {
+            countries: {
+                type: ['array', { element: ['string' , { pattern: /(\w+\s?)+/ }] }],
+                default: ['russia', 'usa', 'china', 'france']
             }
         },
-        sex: {
-            type: 'string',
-            methods: ['get', 'set', 'is'],
-            converters: {
-                toFull: function(sex) {
-                    switch(sex.toLowerCase()) {
-                        case 'm': sex = 'male'; break;
-                        case 'f': sex = 'female'; break;
+        properties: {
+            name: {
+                type: 'string',
+                methods: ['get'],
+                reactive: false
+            },
+            phone: {
+                type: ['string', {
+                    pattern: /\d{1,2}-\d{3}-\d{5,7}/
+                }]
+            },
+            birthday: {
+                type: 'datetime',
+                constratins: {
+                    inPast: function(birthday) {
+                        return birthday.getTime() < Date.now();
                     }
-                    return sex;
                 }
             },
-            constraints: {
-                existedSex: function(sex) {
-                    return -1 !== this.const('SEX').indexOf(sex);
+            sex: {
+                type: 'string',
+                methods: ['get', 'set', 'is'],
+                converters: {
+                    toFull: function(sex) {
+                        switch(sex.toLowerCase()) {
+                            case 'm': sex = 'male'; break;
+                            case 'f': sex = 'female'; break;
+                        }
+                        return sex;
+                    }
+                },
+                constraints: {
+                    existedSex: function(sex) {
+                        return -1 !== this.const('SEX').indexOf(sex);
+                    }
+                }
+            },
+            address:  {
+                type: 'string', 
+                default: 'unknown address'
+            }
+        },
+        clazz_methods: {
+            doSomething: function() {
+                console.log('clazz is doing something');
+            },
+            cryToAll: function(crying) {
+                document.write('Crying to all: "' + crying + '"!');
+                this.emit('crying', crying);
+            }
+        },
+        methods: {
+            getAge: function() {
+                return (new Date()).getFullYear() - this.getBirthday().getFullYear();
+            },
+            doSomething: function() {
+                console.log('instance is doing somethind');
+            },
+            say: function(saying) {
+                document.write(
+                    this.getName() + ': "' + saying + '"!<br>'
+                );
+                this.emit('saying', saying);
+            }
+        },
+        clazz_events: {
+            'crying': {
+                thatCrying: function(crying) {
+                    document.write(
+                        'That crying: "' + crying + '"!<br>'
+                    );
+                }
+            },
+            "instance.created": {
+                newObjectCreated: function(object) {
+                    document.write(
+                        'Person "'+object.getUID()+'" '+
+                            'with name "'+object.getName()+'" '+
+                            'was created!<br>'
+                    );
                 }
             }
         },
-        address:  {
-            type: 'string', 
-            default: 'unknown address'
-        }
-    },
-    clazz_methods: {
-        doSomething: function() {
-            console.log('clazz is doing something');
-        },
-        cryToAll: function(crying) {
-            document.write('Crying to all: "' + crying + '"!');
-            this.emit('crying', crying);
-        }
-    },
-    methods: {
-        getAge: function() {
-            return (new Date()).getFullYear() - this.getBirthday().getFullYear();
-        },
-        doSomething: function() {
-            console.log('instance is doing somethind');
-        },
-        say: function(saying) {
-            document.write(
-                this.getName() + ': "' + saying + '"!<br>'
-            );
-            this.emit('saying', saying);
-        }
-    },
-    clazz_events: {
-        'crying': {
-            thatCrying: function(crying) {
-                document.write(
-                    'That crying: "' + crying + '"!<br>'
-                );
-            }
-        },
-        "instance.created": {
-            newObjectCreated: function(object) {
-                document.write(
-                    'Person "'+object.getUID()+'" '+
-                        'with name "'+object.getName()+'" '+
-                        'was created!<br>'
-                );
-            }
-        }
-    },
-    events: {
-        "property.set": {
-            birthdayChanged: function(property, newValue, oldValue) {
-                if ('birthday' === property) {
+        events: {
+            "property.set": {
+                birthdayChanged: function(property, newValue, oldValue) {
+                    if ('birthday' === property) {
+                        document.write(
+                            'Person "' + this.getUID() + '" ' +
+                                'change his birthday form "' + oldValue + '" ' +
+                                'to "' + newValue + '"!<br>'
+                        )
+                    }
+                }
+            },
+            "property.address.remove": {
+                addressRemoved: function(oldAddress) {
                     document.write(
                         'Person "' + this.getUID() + '" ' +
-                            'change his birthday form "' + oldValue + '" ' +
-                            'to "' + newValue + '"!<br>'
+                            'just remove his address "' + oldAddress + '"!<br>'
                     )
                 }
-            }
-        },
-        "property.address.remove": {
-            addressRemoved: function(oldAddress) {
-                document.write(
-                    'Person "' + this.getUID() + '" ' +
-                        'just remove his address "' + oldAddress + '"!<br>'
-                )
-            }
-        },
-        'saying': {
-            justSaying: function(saying) {
-                document.write('Person "' + this.getUID() + '" said: "' + saying + '"!<br>');
+            },
+            'saying': {
+                justSaying: function(saying) {
+                    document.write('Person "' + this.getUID() + '" said: "' + saying + '"!<br>');
+                }
             }
         }
     }
