@@ -1,8 +1,9 @@
 meteor-clazz
 ============
 
-Integration ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor
-ClazzJS version: 0.5.0
+Integration of ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor
+
+ClazzJS version: 0.5.1
 
 This package add one new meta directive to base library - **reactive**, which makes clazz reactive.
 By default reactive is `false`.

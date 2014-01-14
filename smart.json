@@ -1,8 +1,8 @@
 {
     "name": "clazz",
-    "description": "Integration ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor",
+    "description": "Integration of ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor",
     "homepage": "https://github.com/alexpods/meteor-clazz",
     "author": "Aleksey Podskrebyshev (https://github.com/alexpods)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "git": "https://github.com/alexpods/meteor-clazz.git"
 }
