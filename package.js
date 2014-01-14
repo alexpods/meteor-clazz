@@ -1,5 +1,5 @@
 Package.describe({
-    summary: "Integration ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor"
+    summary: "Integration of ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor"
 });
 
 Package.on_use(function(api) {
