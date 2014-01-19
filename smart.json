@@ -3,6 +3,6 @@
     "description": "Integration of ClazzJS library (https://github.com/alexpods/ClazzJS) into meteor",
     "homepage": "https://github.com/alexpods/meteor-clazz",
     "author": "Aleksey Podskrebyshev (https://github.com/alexpods)",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "git": "https://github.com/alexpods/meteor-clazz.git"
 }
